@@ -253,3 +253,16 @@ Expected: commit succeeds.
 
 - The typecheck failure is the expected Task 1 behavior required by the brief.
 - The lint failure appears unrelated to the review findings and is a separate config issue already present in the baseline setup.
+
+### Fix report update
+
+- Scoped the type-aware ESLint parser options to TypeScript files only so `eslint .` no longer tries to parse root JavaScript config files with the TypeScript project.
+- Ignored `.superpowers/**` in ESLint and Prettier-adjacent project checks so workflow scratch reports are excluded from source formatting/linting.
+
+### Verification
+
+- `pnpm format:check` now passes.
+- `pnpm lint` now passes.
+- `pnpm typecheck` still fails only because `src/index.ts` imports future files that do not exist yet:
+  - `src/domain/tools/index.js`
+  - `src/adapters/mcp/create-server.js`
