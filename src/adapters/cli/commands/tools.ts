@@ -1,4 +1,5 @@
 import { Command } from "commander";
+import { ZodError } from "zod";
 import { runAdd } from "../../../domain/tools/add.js";
 import { runEcho } from "../../../domain/tools/echo.js";
 import { toCliError } from "../errors.js";
@@ -13,7 +14,13 @@ export type Output = {
 function parseCliNumber(value: string, name: string): number {
   const parsed = Number(value);
   if (!Number.isFinite(parsed)) {
-    throw new Error(`${name} must be a finite number`);
+    throw new ZodError([
+      {
+        code: "custom",
+        path: [name],
+        message: `${name} must be a finite number`,
+      },
+    ]);
   }
   return parsed;
 }
@@ -38,7 +45,6 @@ export function createToolsCommand(output: Output): Command {
     .description("Return the provided text unchanged")
     .argument("<text>", "Text to echo")
     .option("--json", "Print structured JSON output")
-    .allowUnknownOption()
     .action(async (text: string, options: { json?: boolean }) => {
       const json = options.json === true;
       try {

@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import { Command } from "commander";
-import { createToolsCommand, type Output } from "./adapters/cli/commands/tools.ts";
-import { startHttpTransport } from "./transports/http.ts";
-import { startStdioTransport } from "./transports/stdio.ts";
+import { createToolsCommand, type Output } from "./adapters/cli/commands/tools.js";
+import { startHttpTransport } from "./transports/http.js";
+import { startStdioTransport } from "./transports/stdio.js";
 
 const output: Output = {
   writeStdout(text: string): void {
@@ -36,7 +36,7 @@ export function buildCliProgram(): Command {
     .option("--host <host>", "Host to bind")
     .option("--port <port>", "Port to bind")
     .action(async (options: { host?: string; port?: string }) => {
-      await startHttpTransport({ host: options.host, port: options.port });
+      await startHttpTransport(options.host || options.port ? { host: options.host, port: options.port } : {});
     });
 
   program.addCommand(mcp);
