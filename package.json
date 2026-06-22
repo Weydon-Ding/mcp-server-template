@@ -1,0 +1,46 @@
+{
+  "name": "mcp-server-template",
+  "version": "0.1.0",
+  "description": "Reusable TypeScript MCP server template with stdio, Streamable HTTP, and CLI entry points.",
+  "type": "module",
+  "private": false,
+  "bin": {
+    "mcp-server-template": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    ".env.example"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check",
+    "test": "vitest run --exclude 'tests/mcp/**/*.test.ts'",
+    "test:smoke": "vitest run tests/mcp",
+    "dev:stdio": "tsx src/cli.ts mcp stdio",
+    "dev:http": "tsx src/cli.ts mcp http"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "latest",
+    "commander": "latest",
+    "express": "latest",
+    "zod": "latest"
+  },
+  "devDependencies": {
+    "@eslint/js": "latest",
+    "@types/express": "latest",
+    "@types/node": "latest",
+    "eslint": "latest",
+    "prettier": "latest",
+    "tsx": "latest",
+    "typescript": "latest",
+    "typescript-eslint": "latest",
+    "vitest": "latest"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
