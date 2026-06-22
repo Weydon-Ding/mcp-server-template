@@ -36,7 +36,17 @@ export function buildCliProgram(): Command {
     .option("--host <host>", "Host to bind")
     .option("--port <port>", "Port to bind")
     .action(async (options: { host?: string; port?: string }) => {
-      await startHttpTransport(options.host || options.port ? { host: options.host, port: options.port } : {});
+      const httpOptions: { host?: string; port?: string } = {};
+
+      if (options.host !== undefined) {
+        httpOptions.host = options.host;
+      }
+
+      if (options.port !== undefined) {
+        httpOptions.port = options.port;
+      }
+
+      await startHttpTransport(httpOptions);
     });
 
   program.addCommand(mcp);
