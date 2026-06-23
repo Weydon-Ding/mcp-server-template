@@ -15,27 +15,38 @@ function isAuthorized(req: Request, token: string | undefined): boolean {
 
 export function createHttpApp(config: HttpConfig): Express {
   const app = express();
-  app.use(express.json({ limit: "1mb" }));
 
-  app.post("/mcp", async (req: Request, res: Response) => {
-    if (!isAuthorized(req, config.token)) {
-      res.status(401).json({ error: "unauthorized" });
-      return;
-    }
+  app.post(
+    "/mcp",
+    (req: Request, res: Response, next) => {
+      if (!isAuthorized(req, config.token)) {
+        res.status(401).json({ error: "unauthorized" });
+        return;
+      }
 
-    const server = createMcpServer();
-    const transport = new StreamableHTTPServerTransport();
-
-    try {
-      await server.connect(transport as Transport);
-      await transport.handleRequest(req, res, req.body);
-    } finally {
-      res.on("close", () => {
+      next();
+    },
+    express.json({ limit: "1mb" }),
+    async (req: Request, res: Response) => {
+      const server = createMcpServer();
+      const transport = new StreamableHTTPServerTransport();
+      const closeTransport = (): void => {
         void transport.close();
         void server.close();
-      });
-    }
-  });
+      };
+
+      res.once("close", closeTransport);
+
+      try {
+        await server.connect(transport as Transport);
+        await transport.handleRequest(req, res, req.body);
+      } catch (error) {
+        res.off("close", closeTransport);
+        closeTransport();
+        throw error;
+      }
+    },
+  );
 
   return app;
 }

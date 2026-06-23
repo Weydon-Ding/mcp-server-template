@@ -56,6 +56,19 @@ describe("Streamable HTTP MCP transport", () => {
     await server.close();
   });
 
+  it("rejects unauthenticated malformed JSON before parsing the body", async () => {
+    const server = await listen("secret-token");
+
+    const response = await fetch(server.url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: "{",
+    });
+
+    expect(response.status).toBe(401);
+    await server.close();
+  });
+
   it("allows requests with the configured bearer token", async () => {
     const server = await listen("secret-token");
     const transport = new StreamableHTTPClientTransport(server.url, {
