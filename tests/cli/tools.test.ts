@@ -1,7 +1,9 @@
 import { spawn } from "node:child_process";
 import { describe, expect, it } from "vitest";
 
-async function runCli(args: string[]): Promise<{ code: number | null; stdout: string; stderr: string }> {
+async function runCli(
+  args: string[],
+): Promise<{ code: number | null; stdout: string; stderr: string }> {
   return await new Promise((resolve) => {
     const child = spawn(process.execPath, ["--import", "tsx", "src/cli.ts", ...args], {
       cwd: process.cwd(),

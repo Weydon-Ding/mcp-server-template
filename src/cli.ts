@@ -19,7 +19,10 @@ const output: Output = {
 export function buildCliProgram(): Command {
   const program = new Command();
 
-  program.name("mcp-server-template").description("Reusable TypeScript MCP server template").version("0.1.0");
+  program
+    .name("mcp-server-template")
+    .description("Reusable TypeScript MCP server template")
+    .version("0.1.0");
 
   const mcp = new Command("mcp").description("Start MCP transports");
 
