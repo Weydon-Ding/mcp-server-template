@@ -1,8 +1,11 @@
+ARG PNPM_VERSION=10.26.0
+
 FROM node:20-slim AS deps
+ARG PNPM_VERSION
 
 WORKDIR /app
 
-RUN corepack enable
+RUN corepack enable && corepack prepare "pnpm@${PNPM_VERSION}" --activate
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile
@@ -14,6 +17,7 @@ COPY src ./src
 RUN pnpm build
 
 FROM node:20-slim AS runtime
+ARG PNPM_VERSION
 
 WORKDIR /app
 
@@ -21,7 +25,7 @@ ENV NODE_ENV=production
 ENV MCP_HTTP_HOST=0.0.0.0
 ENV MCP_HTTP_PORT=3000
 
-RUN corepack enable
+RUN corepack enable && corepack prepare "pnpm@${PNPM_VERSION}" --activate
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --prod --frozen-lockfile
