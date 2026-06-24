@@ -62,6 +62,35 @@ Override host and port:
 pnpm tsx src/cli.ts mcp http --host 127.0.0.1 --port 3001
 ```
 
+## Run with Docker
+
+The Dockerfile is intended for the Streamable HTTP transport.
+
+Build the image:
+
+```bash
+docker build -t mcp-server-template .
+```
+
+Run the HTTP server:
+
+```bash
+docker run --rm -p 3000:3000 \
+  -e MCP_HTTP_HOST=0.0.0.0 \
+  -e MCP_HTTP_TOKEN=change-me \
+  mcp-server-template
+```
+
+The host endpoint is:
+
+```text
+POST http://127.0.0.1:3000/mcp
+```
+
+Set `MCP_HTTP_TOKEN` when exposing the server beyond trusted local development, or put the server behind an authenticated reverse proxy.
+
+Docker is not the recommended path for stdio MCP usage; use the direct local command or package-manager workflow for stdio.
+
 ## HTTP configuration
 
 ```env
