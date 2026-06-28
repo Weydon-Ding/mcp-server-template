@@ -1,5 +1,7 @@
 # mcp-server-template
 
+[中文文档](docs/README_zh.md)
+
 Reusable TypeScript template for building MCP servers with three entry points:
 
 - MCP over stdio
