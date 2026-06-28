@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "mcp-server-template": {
+      "command": "pnpm",
+      "args": ["dev:stdio"]
+    }
+  }
+}
