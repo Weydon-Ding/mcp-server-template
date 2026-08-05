@@ -1,5 +1,7 @@
 # mcp-server-template
 
+[English](README.md) | **简体中文** | [繁體中文](README_zh-TW.md) | [日本語](README_ja.md) | [한국어](README_ko.md)
+
 可复用的 TypeScript MCP server 模板，提供三个入口：
 
 - 基于 stdio 的 MCP server

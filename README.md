@@ -1,6 +1,6 @@
 # mcp-server-template
 
-[中文文档](docs/README_zh.md)
+**English** | [简体中文](README_zh.md) | [繁體中文](README_zh-TW.md) | [日本語](README_ja.md) | [한국어](README_ko.md)
 
 Reusable TypeScript template for building MCP servers with three entry points:
 
